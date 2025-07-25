@@ -1,0 +1,8 @@
+/.bundle
+/vendor
+*.rbc
+*.log
+*.sqlite3
+coverage/
+*.swp
+.DS_Store
