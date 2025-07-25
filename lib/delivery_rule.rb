@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeliveryRule
   attr_reader :min_total, :max_total, :charge
 

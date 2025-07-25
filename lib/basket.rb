@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Basket
   def initialize(catalog:, delivery_rules: [], offers: [])
     @catalog = catalog
@@ -9,6 +11,7 @@ class Basket
   def add(product_code)
     product = @catalog[product_code]
     raise "Invalid product code: #{product_code}" unless product
+
     @items << product
   end
 
@@ -27,7 +30,7 @@ class Basket
   end
 
   def sum_prices(items)
-    items.map(&:price).sum
+    items.sum(&:price)
   end
 
   def calculate_delivery(subtotal)

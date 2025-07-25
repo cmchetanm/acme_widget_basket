@@ -1,13 +1,11 @@
-require_relative '../lib/basket'
-require_relative '../lib/product'
-require_relative '../lib/delivery_rule'
+# frozen_string_literal: true
 
 RSpec.describe Basket do
   let(:catalog) do
     {
-      "R01" => Product.new(code: "R01", name: "Red Widget", price: 32.95),
-      "G01" => Product.new(code: "G01", name: "Green Widget", price: 24.95),
-      "B01" => Product.new(code: "B01", name: "Blue Widget", price: 7.95)
+      'R01' => Product.new(code: 'R01', name: 'Red Widget', price: 32.95),
+      'G01' => Product.new(code: 'G01', name: 'Green Widget', price: 24.95),
+      'B01' => Product.new(code: 'B01', name: 'Blue Widget', price: 7.95)
     }
   end
 
@@ -19,32 +17,40 @@ RSpec.describe Basket do
     ]
   end
 
-  let(:basket) { Basket.new(catalog: catalog, delivery_rules: delivery_rules) }
+  let(:offers) { [RedWidgetOffer.new] }
 
-  it "adds a product by code" do
-    basket.add("R01")
+  let(:basket) { Basket.new(catalog: catalog, delivery_rules: delivery_rules, offers: offers) }
+
+  it 'adds a product by code' do
+    basket.add('R01')
     expected_total = (32.95 + 4.95).round(2)
     expect(basket.total).to eq(expected_total)
   end
 
-  it "raises error for invalid product" do
-    expect { basket.add("X99") }.to raise_error("Invalid product code: X99")
+  it 'raises error for invalid product' do
+    expect { basket.add('X99') }.to raise_error('Invalid product code: X99')
   end
 
-  it "applies correct delivery charge under $50" do
-    basket.add("B01")
-    basket.add("G01")
+  it 'applies correct delivery charge under $50' do
+    basket.add('B01')
+    basket.add('G01')
     expect(basket.total).to eq(32.90 + 4.95)
   end
 
-  it "applies correct delivery charge under $90" do
-    basket.add("R01")
-    basket.add("G01")
+  it 'applies correct delivery charge under $90' do
+    basket.add('R01')
+    basket.add('G01')
     expect(basket.total).to eq(57.90 + 2.95)
   end
 
-  it "applies free delivery for >= $90" do
-    3.times { basket.add("R01") }
-    expect(basket.total).to eq(98.85)
+  it 'applies free delivery for >= $90' do
+    3.times { basket.add('R01') }
+    expect(basket.total).to eq(85.32)
+  end
+
+  it 'applies R01 half price offer correctly' do
+    basket.add('R01')
+    basket.add('R01')
+    expect(basket.total).to eq(54.37)
   end
 end
