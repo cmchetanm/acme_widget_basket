@@ -1,4 +1,5 @@
 require_relative '../lib/product'
+require_relative '../lib/basket'
 
 catalog = {
   "R01" => Product.new(code: "R01", name: "Red Widget", price: 32.95),
@@ -6,5 +7,8 @@ catalog = {
   "B01" => Product.new(code: "B01", name: "Blue Widget", price: 7.95)
 }
 
-puts catalog["R01"].name
-puts catalog["G01"].price
+basket = Basket.new(catalog: catalog)
+basket.add("R01")
+basket.add("G01")
+
+puts "Total: $#{'%.2f' % basket.total}"
